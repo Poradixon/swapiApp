@@ -3,17 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class SwapiService {
-  private apiUrl = 'https://www.swapi.tech/api';
-  //   private readonly PEOPLE_COUNT = 82; // Liczba osób
-  //   private readonly STARSHIPS_COUNT = 37; // Liczba statków kosmicznych
-
-  //     const maxId =
-  //       resource === 'people' ? this.PEOPLE_COUNT : this.STARSHIPS_COUNT;
-  //     const randomId = Math.floor(Math.random() * maxId) + 1; // Losowanie ID w odpowiednim zakresie
-  //     const url = `${this.BASE_URL}/${resource}/${randomId}`;
+  private apiUrl = "https://www.swapi.tech/api";
+  private readonly PEOPLE_COUNT = 82;
+  private readonly STARSHIPS_COUNT = 29;
 
   constructor(private http: HttpClient) {}
 
@@ -25,5 +20,14 @@ export class SwapiService {
   getRandomStarship(): Observable<any> {
     const randomId = Math.floor(Math.random() * 36) + 1;
     return this.http.get(`${this.apiUrl}/starships/${randomId}`);
+  }
+
+  getResource(resource: string): Observable<any> {
+    const maxId =
+      resource === "people" ? this.PEOPLE_COUNT : this.STARSHIPS_COUNT;
+
+    const randomId = Math.floor(Math.random() * maxId) + 1;
+
+    return this.http.get(`${this.apiUrl}/${resource}/${randomId}`);
   }
 }

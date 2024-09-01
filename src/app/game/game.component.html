@@ -1,28 +1,34 @@
-<!-- src/app/game/game.component.html -->
 <div class="game-container">
     <h1 class="title">Star Wars Battle</h1>
+
+    <div class="resource-buttons">
+    <button mat-button [color]="resourceType === 'people' ? 'primary' : ''" (click)="changeResourceType('people')">People</button>
+    <button mat-button [color]="resourceType === 'starships' ? 'primary' : ''" (click)="changeResourceType('starships')">Starships</button>
+  </div>
     
-    <div class="cards">
-      <mat-card class="card" *ngIf="leftCard" color="primary">
-        <mat-card-header>
-          <mat-card-title>Left Player</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>Name: {{ leftCard.name }}</p>
-          <p>Mass: {{ leftCard.mass }} kg</p>
-        </mat-card-content>
-      </mat-card>
-  
-      <mat-card class="card" *ngIf="rightCard" color="accent">
-        <mat-card-header>
-          <mat-card-title>Right Player</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>Name: {{ rightCard.name }}</p>
-          <p>Mass: {{ rightCard.mass }} kg</p>
-        </mat-card-content>
-      </mat-card>
-    </div>
+  <div class="cards">
+    <mat-card class="card" *ngIf="leftCard">
+      <mat-card-header>
+        <mat-card-title>Left Player</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Name: {{ leftCard.name }}</p>
+        <p *ngIf="resourceType === 'people'">Mass: {{ leftCard.mass }} kg</p>
+        <p *ngIf="resourceType === 'starships'">Crew: {{ leftCard.crew }}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="card" *ngIf="rightCard">
+      <mat-card-header>
+        <mat-card-title>Right Player</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Name: {{ rightCard.name }}</p>
+        <p *ngIf="resourceType === 'people'">Mass: {{ rightCard.mass }} kg</p>
+        <p *ngIf="resourceType === 'starships'">Crew: {{ rightCard.crew }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
   
    <div *ngIf="winner" class="winner-announcement">
       <h3>Winner: {{ winner }}</h3>
