@@ -1,0 +1,26 @@
+# Dependencies
+/node_modules/
+
+# Angular cache
+/.angular/
+
+# IDEs and editors
+/.idea/
+/.vscode/
+
+# Logs
+*.log
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Build output
+/dist/
+/build/
+/coverage/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
