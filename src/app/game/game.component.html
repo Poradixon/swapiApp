@@ -10,7 +10,6 @@
     <button mat-raised-button [color]="resourceType === 'starships' ? 'primary' : ''" (click)="changeResourceType('starships')">Starships</button>
   </div>
 
-
   <div class="score-board">
     <mat-card class="score-card">
       <mat-card-header>
@@ -23,8 +22,8 @@
     </mat-card>
   </div>
 
-  <div class="cards-container">
-    <mat-card class="card" *ngIf="leftCard">
+  <div class="cards-container" *ngIf="cardsVisible" [@fadeIn]>
+    <mat-card class="card" *ngIf="leftCard" [@cardAnimation]>
       <mat-card-header>
         <mat-card-title>Left Player</mat-card-title>
       </mat-card-header>
@@ -35,7 +34,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="card" *ngIf="rightCard">
+    <mat-card class="card" *ngIf="rightCard" [@cardAnimation]>
       <mat-card-header>
         <mat-card-title>Right Player</mat-card-title>
       </mat-card-header>
@@ -47,7 +46,7 @@
     </mat-card>
   </div>
 
-  <div *ngIf="winner" class="winner-announcement">
+  <div *ngIf="cardsLoaded && winner" class="winner-announcement">
     <h3>Winner: {{ winner }}</h3>
   </div>
 

@@ -23,20 +23,27 @@ import {
         animate("0.5s", style({ transform: "translateY(0)", opacity: 1 })),
       ]),
     ]),
+    trigger("fadeOut", [
+      state("visible", style({ opacity: 1 })),
+      transition("visible => void", [animate("0.5s", style({ opacity: 0 }))]),
+    ]),
   ],
 })
 export class GameComponent {
   public leftCard: any;
   public rightCard: any;
-  public winner: string = "";
+  winner: string | null = null;
   leftScore = 0;
   rightScore = 0;
   resourceType: "people" | "starships" = "people";
+  cardsVisible = true;
+  cardsLoaded = false;
 
   constructor(private swapiService: SwapiService) {}
 
   startGame() {
-    this.winner = ""; // restart
+    this.winner = null;
+    this.cardsVisible = false;
     this.fetchCards();
   }
 
@@ -47,6 +54,8 @@ export class GameComponent {
 
     this.swapiService.getResource(this.resourceType).subscribe((resource) => {
       this.rightCard = resource.result.properties;
+      this.cardsVisible = true;
+      this.cardsLoaded = true;
       this.determineWinner(this.resourceType);
     });
   }
@@ -60,11 +69,11 @@ export class GameComponent {
 
     switch (resource) {
       case "people":
-        this.winner = this.compareMass(leftMass, rightMass);
+        this.winner = this.compareValue(leftMass, rightMass);
         this.updateScore(this.winner);
         break;
       case "starships":
-        this.winner = this.compareMass(leftCrew, rightCrew);
+        this.winner = this.compareValue(leftCrew, rightCrew);
         this.updateScore(this.winner);
         break;
       default:
@@ -72,7 +81,7 @@ export class GameComponent {
     }
   }
 
-  compareMass(value1: number, value2: number): string {
+  compareValue(value1: number, value2: number): string {
     if (value1 > value2) {
       return "Left Player";
     } else if (value1 < value2) {
@@ -92,6 +101,5 @@ export class GameComponent {
 
   changeResourceType(type: "people" | "starships"): void {
     this.resourceType = type;
-    console.log(type, "type");
   }
 }
