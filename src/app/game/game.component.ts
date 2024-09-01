@@ -1,10 +1,29 @@
 import { Component } from '@angular/core';
 import { SwapiService } from '../services/swapi.service';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from "@angular/animations";
 
 @Component({
   selector: "app-game",
   templateUrl: "./game.component.html",
   styleUrls: ["./game.component.scss"],
+  animations: [
+    trigger("fadeIn", [
+      state("void", style({ opacity: 0 })),
+      transition(":enter", [animate("0.5s", style({ opacity: 1 }))]),
+    ]),
+    trigger("cardAnimation", [
+      state("void", style({ transform: "translateY(-20px)", opacity: 0 })),
+      transition(":enter", [
+        animate("0.5s", style({ transform: "translateY(0)", opacity: 1 })),
+      ]),
+    ]),
+  ],
 })
 export class GameComponent {
   public leftCard: any;
@@ -45,7 +64,7 @@ export class GameComponent {
         this.updateScore(this.winner);
         break;
       case "starships":
-        this.winner = this.compareMass(leftCrew, rightCrew); 
+        this.winner = this.compareMass(leftCrew, rightCrew);
         this.updateScore(this.winner);
         break;
       default:

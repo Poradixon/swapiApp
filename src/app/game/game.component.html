@@ -1,18 +1,29 @@
 <div class="game-container">
-    <h1 class="title">Star Wars Battle</h1>
+  <mat-card class="game-header">
+    <mat-card-header>
+      <mat-card-title>Star Wars Battle</mat-card-title>
+    </mat-card-header>
+  </mat-card>
 
-    <div class="resource-buttons">
-    <button mat-button [color]="resourceType === 'people' ? 'primary' : ''" (click)="changeResourceType('people')">People</button>
-    <button mat-button [color]="resourceType === 'starships' ? 'primary' : ''" (click)="changeResourceType('starships')">Starships</button>
+  <div class="resource-buttons">
+    <button mat-raised-button [color]="resourceType === 'people' ? 'primary' : ''" (click)="changeResourceType('people')">People</button>
+    <button mat-raised-button [color]="resourceType === 'starships' ? 'primary' : ''" (click)="changeResourceType('starships')">Starships</button>
   </div>
 
 
   <div class="score-board">
-    <span>Left Player Score: {{ leftScore }}</span>
-    <span>Right Player Score: {{ rightScore }}</span>
+    <mat-card class="score-card">
+      <mat-card-header>
+        <mat-card-title>Scores</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Left Player: {{ leftScore }}</p>
+        <p>Right Player: {{ rightScore }}</p>
+      </mat-card-content>
+    </mat-card>
   </div>
-    
-  <div class="cards">
+
+  <div class="cards-container">
     <mat-card class="card" *ngIf="leftCard">
       <mat-card-header>
         <mat-card-title>Left Player</mat-card-title>
@@ -35,11 +46,10 @@
       </mat-card-content>
     </mat-card>
   </div>
-  
-   <div *ngIf="winner" class="winner-announcement">
-      <h3>Winner: {{ winner }}</h3>
-    </div>
-  
-    <button mat-raised-button color="primary" class="play-again-button" (click)="startGame()">Let's play</button>
+
+  <div *ngIf="winner" class="winner-announcement">
+    <h3>Winner: {{ winner }}</h3>
   </div>
-  
+
+  <button mat-raised-button color="primary" class="play-again-button" (click)="startGame()">Play Again</button>
+</div>
