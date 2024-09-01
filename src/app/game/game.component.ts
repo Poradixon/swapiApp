@@ -10,6 +10,8 @@ export class GameComponent {
   public leftCard: any;
   public rightCard: any;
   public winner: string = "";
+  leftScore = 0;
+  rightScore = 0;
   resourceType: "people" | "starships" = "people";
 
   constructor(private swapiService: SwapiService) {}
@@ -26,20 +28,46 @@ export class GameComponent {
 
     this.swapiService.getResource(this.resourceType).subscribe((resource) => {
       this.rightCard = resource.result.properties;
-      this.determineWinner();
+      this.determineWinner(this.resourceType);
     });
   }
 
-  determineWinner() {
-    const mass1 = parseInt(this.leftCard.mass);
-    const mass2 = parseInt(this.rightCard.mass);
+  determineWinner(resource: string): void {
+    const leftMass = parseInt(this.leftCard.mass, 10);
+    const rightMass = parseInt(this.rightCard.mass, 10);
 
-    if (mass1 > mass2) {
-      this.winner = "Left";
-    } else if (mass1 < mass2) {
-      this.winner = "Right";
+    const leftCrew = parseInt(this.leftCard.crew, 10);
+    const rightCrew = parseInt(this.rightCard.crew, 10);
+
+    switch (resource) {
+      case "people":
+        this.winner = this.compareMass(leftMass, rightMass);
+        this.updateScore(this.winner);
+        break;
+      case "starships":
+        this.winner = this.compareMass(leftCrew, rightCrew); 
+        this.updateScore(this.winner);
+        break;
+      default:
+        break;
+    }
+  }
+
+  compareMass(value1: number, value2: number): string {
+    if (value1 > value2) {
+      return "Left Player";
+    } else if (value1 < value2) {
+      return "Right Player";
     } else {
-      this.winner = "Draw";
+      return "Draw";
+    }
+  }
+
+  updateScore(winner: string): void {
+    if (winner === "Left Player") {
+      this.leftScore++;
+    } else if (winner === "Right Player") {
+      this.rightScore++;
     }
   }
 

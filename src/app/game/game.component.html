@@ -5,6 +5,12 @@
     <button mat-button [color]="resourceType === 'people' ? 'primary' : ''" (click)="changeResourceType('people')">People</button>
     <button mat-button [color]="resourceType === 'starships' ? 'primary' : ''" (click)="changeResourceType('starships')">Starships</button>
   </div>
+
+
+  <div class="score-board">
+    <span>Left Player Score: {{ leftScore }}</span>
+    <span>Right Player Score: {{ rightScore }}</span>
+  </div>
     
   <div class="cards">
     <mat-card class="card" *ngIf="leftCard">
@@ -34,6 +40,6 @@
       <h3>Winner: {{ winner }}</h3>
     </div>
   
-    <button mat-raised-button color="primary" class="play-again-button" (click)="startGame()">Play Again</button>
+    <button mat-raised-button color="primary" class="play-again-button" (click)="startGame()">Let's play</button>
   </div>
   

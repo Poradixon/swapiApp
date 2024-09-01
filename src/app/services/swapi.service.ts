@@ -12,16 +12,6 @@ export class SwapiService {
 
   constructor(private http: HttpClient) {}
 
-  getRandomPerson(): Observable<any> {
-    const randomId = Math.floor(Math.random() * 83) + 1;
-    return this.http.get(`${this.apiUrl}/people/${randomId}`);
-  }
-
-  getRandomStarship(): Observable<any> {
-    const randomId = Math.floor(Math.random() * 36) + 1;
-    return this.http.get(`${this.apiUrl}/starships/${randomId}`);
-  }
-
   getResource(resource: string): Observable<any> {
     const maxId =
       resource === "people" ? this.PEOPLE_COUNT : this.STARSHIPS_COUNT;
