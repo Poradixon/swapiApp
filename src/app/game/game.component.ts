@@ -7,6 +7,8 @@ import {
   transition,
   animate,
 } from "@angular/animations";
+import { Card } from "../interfaces/card.interface";
+
 
 @Component({
   selector: "app-game",
@@ -30,8 +32,8 @@ import {
   ],
 })
 export class GameComponent {
-  public leftCard: any;
-  public rightCard: any;
+  public leftCard: Card | null = null;
+  public rightCard: Card | null = null;
   winner: string | null = null;
   leftScore = 0;
   rightScore = 0;
@@ -41,43 +43,50 @@ export class GameComponent {
 
   constructor(private swapiService: SwapiService) {}
 
-  startGame() {
+  startGame(): void {
     this.winner = null;
     this.cardsVisible = false;
     this.fetchCards();
   }
 
-  fetchCards() {
-    this.swapiService.getResource(this.resourceType).subscribe((resource) => {
-      this.leftCard = resource.result.properties;
+  fetchCards(): void {
+    const fetchLeftCard$ = this.swapiService.getResource(this.resourceType);
+    const fetchRightCard$ = this.swapiService.getResource(this.resourceType);
+
+    fetchLeftCard$.subscribe((leftResource) => {
+      this.leftCard = leftResource.result.properties;
     });
 
-    this.swapiService.getResource(this.resourceType).subscribe((resource) => {
-      this.rightCard = resource.result.properties;
-      this.cardsVisible = true;
-      this.cardsLoaded = true;
-      this.determineWinner(this.resourceType);
+    fetchRightCard$.subscribe((rightResource) => {
+      this.rightCard = rightResource.result.properties;
+      if (this.leftCard) {
+        this.cardsVisible = true;
+        this.cardsLoaded = true;
+        this.determineWinner(this.resourceType);
+      }
     });
   }
 
   determineWinner(resource: string): void {
-    const leftMass = parseInt(this.leftCard.mass, 10);
-    const rightMass = parseInt(this.rightCard.mass, 10);
+    if (this.leftCard && this.rightCard) {
+      const leftMass = parseInt(this.leftCard.mass, 10);
+      const rightMass = parseInt(this.rightCard.mass, 10);
 
-    const leftCrew = parseInt(this.leftCard.crew, 10);
-    const rightCrew = parseInt(this.rightCard.crew, 10);
+      const leftCrew = parseInt(this.leftCard.crew, 10);
+      const rightCrew = parseInt(this.rightCard.crew, 10);
 
-    switch (resource) {
-      case "people":
-        this.winner = this.compareValue(leftMass, rightMass);
-        this.updateScore(this.winner);
-        break;
-      case "starships":
-        this.winner = this.compareValue(leftCrew, rightCrew);
-        this.updateScore(this.winner);
-        break;
-      default:
-        break;
+      switch (resource) {
+        case "people":
+          this.winner = this.compareValue(leftMass, rightMass);
+          this.updateScore(this.winner);
+          break;
+        case "starships":
+          this.winner = this.compareValue(leftCrew, rightCrew);
+          this.updateScore(this.winner);
+          break;
+        default:
+          break;
+      }
     }
   }
 
