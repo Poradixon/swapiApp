@@ -69,18 +69,16 @@ export class GameComponent {
 
   determineWinner(resource: string): void {
     if (this.leftCard && this.rightCard) {
-      const leftMass = parseInt(this.leftCard.mass, 10);
-      const rightMass = parseInt(this.rightCard.mass, 10);
-
-      const leftCrew = parseInt(this.leftCard.crew, 10);
-      const rightCrew = parseInt(this.rightCard.crew, 10);
-
       switch (resource) {
         case "people":
+          const leftMass = this.parseNumber(this.leftCard.mass);
+          const rightMass = this.parseNumber(this.rightCard.mass);
           this.winner = this.compareValue(leftMass, rightMass);
           this.updateScore(this.winner);
           break;
         case "starships":
+          const leftCrew = this.parseNumber(this.leftCard.crew);
+          const rightCrew = this.parseNumber(this.rightCard.crew);
           this.winner = this.compareValue(leftCrew, rightCrew);
           this.updateScore(this.winner);
           break;
@@ -95,6 +93,8 @@ export class GameComponent {
       return "Left Player";
     } else if (value1 < value2) {
       return "Right Player";
+    } else if (isNaN(value1) || isNaN(value2)) {
+      return "Cannot compare due to unknown values";
     } else {
       return "Draw";
     }
@@ -110,5 +110,9 @@ export class GameComponent {
 
   changeResourceType(type: "people" | "starships"): void {
     this.resourceType = type;
+  }
+
+  private parseNumber(value: string): number {
+    return parseInt(value.replace(",", ""), 10);
   }
 }
